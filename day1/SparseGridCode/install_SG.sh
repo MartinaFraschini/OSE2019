@@ -20,5 +20,3 @@ cd ../
 cd pyipopt_midway
 ./install_midway.sh
 echo " IPOPT and PYIPOPT is installed "
-
-
