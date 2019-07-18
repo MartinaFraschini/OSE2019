@@ -32,7 +32,7 @@
 #
 #
 #  The examples below were adjusted for the OSE 19 lab at BFI Chicago.
-#  Simon Scheidegger, 07/19
+#  Simon Scheidegger
 #
 ##############################################################################################################################################################################
 
@@ -55,7 +55,7 @@ grid2 = TasmanianSG.TasmanianSparseGrid()
 
 #############################################################################
 
-# EXAMPLE 1 for OSM:
+# EXAMPLE 1 for OSE:
 # interpolate: f(x,y) = cos(0.5 * pi * x) * cos(0.5 * pi * y)
 # using piecewise linear basis functions.
 
@@ -77,7 +77,7 @@ iDepth = 5
 which_basis = 1 #1= linear basis functions -> Check the manual for other options
 
 print("\n-------------------------------------------------------------------------------------------------")
-print("Example 1 for OSM: interpolate f(x,y) = cos(0.5 * pi * x) * cos(0.5 * pi * y)")
+print("Example 1 for OSE: interpolate f(x,y) = cos(0.5 * pi * x) * cos(0.5 * pi * y)")
 print("       using fixed sparse grid with depth {0:1d}".format(iDepth))
 print("       the error is estimated as the maximum from 1000 random points\n")
 
@@ -102,7 +102,7 @@ f.close()
 
 #############################################################################
 
-## EXAMPLE 2 for OSM:
+## EXAMPLE 2 for OSE:
 ## interpolate: f(x,y) = exp(-x) / (1 + 100 * exp(-10 * y))
 ## using refinement
 
@@ -159,7 +159,7 @@ grid2.makeLocalPolynomialGrid(iDim, iOut, refinement_level+iDepth, which_basis, 
 a = grid2.getNumPoints()
  
 print("\n-------------------------------------------------------------------------------------------------")
-print "   a fix sparse grid of level ", refinement_level+iDepth, " would consist of " ,a, " points"
+print( "   a fix sparse grid of level ", refinement_level+iDepth, " would consist of " ,a, " points")
 print("\n-------------------------------------------------------------------------------------------------\n")    
 
 
