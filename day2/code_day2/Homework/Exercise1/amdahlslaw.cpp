@@ -7,12 +7,12 @@
 using namespace std;
 
 // define function to compute the maximum speed-up (Amdahl's Law):
-double AmdahlsLaw(double const s, double percent) 
+double AmdahlsLaw(double const p, double f_percent) 
 {
     double speedup;
-    double p;
-    p = percent / double(100);
-    speedup = 1 / (p + (1 / s) * (1 - p));
+    double f;
+    f = f_percent / double(100);
+    speedup = 1 / (f + (1 - f)/p);
 
     return speedup;
 }
@@ -21,8 +21,8 @@ double AmdahlsLaw(double const s, double percent)
 
 int main()
 {
-    cout << "\nAmdahl's Law: S(p, s) = 1/(p + (1/s)*(1-p)), \nwhere S is the speed-up, p the proportion of the program that remains serial and s the number of processors. " << endl;
-    cout << "In our case, with s = 100 CPUs and p = 0.4%, we have S(100, 0.004) = " << AmdahlsLaw(100, 0.4) << "\n" << endl;
+    cout << "\nAmdahl's Law: S(p, N) = 1/(f + (1-f)/p), \nwhere S is the speed-up, f the proportion of the program that remains serial and p the number of processors. " << endl;
+    cout << "In our case, with p = 100 CPUs and f = 0.4%, we have S = " << AmdahlsLaw(100, 0.4) << "\n" << endl;
 
     return 0;
 }
