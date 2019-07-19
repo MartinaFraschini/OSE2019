@@ -11,4 +11,4 @@
 #SBATCH --partition=sandyb		# partition to use
 
 # Run the process 
-./pi_findiff.x
+./hidihowname.exec
