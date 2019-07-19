@@ -7,8 +7,7 @@
 
 #SBATCH --ntasks=1		# this job requests 1 core
 
-#SBATCH --account=oselab
-#SBATCH --partition=sandyb		# partition to use
+#SBATCH --partition=broadwl		# partition to use
 
 # Run the process 
 ./pi_findiff.x

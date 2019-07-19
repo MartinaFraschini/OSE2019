@@ -1,14 +1,13 @@
 #!/bin/bash
 
-#SBATCH --job-name=pi_findiff	## job name
+#SBATCH --job-name=helloyou	## job name
 
-#SBATCH --output=pi_findiff.out		## output file
-#SBATCH --error=pi_findiff.err		## error file
+#SBATCH --output=helloyou.out		## output file
+#SBATCH --error=helloyou.err		## error file
 
 #SBATCH --ntasks=1		# this job requests 1 core
 
-#SBATCH --account=oselab
-#SBATCH --partition=sandyb		# partition to use
+#SBATCH --partition=broadwl		# partition to use
 
 # Run the process 
 ./hidihowname.exec
