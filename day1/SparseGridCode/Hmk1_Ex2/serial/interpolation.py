@@ -39,8 +39,8 @@ def sparse_grid(n_agents, iDepth):
     EV = np.empty([iNumP1, 1])
     for iI in range(iNumP1):
         for sS in range(n_shocks):
-            aVals[iI][sS]=solver.initial(aPoints[iI], n_agents, theta[sS])[0]
-        EV[iI] = sum(prob * aVals[iI][:])     
+            aVals[iI,sS]=solver.initial(aPoints[iI], n_agents, theta[sS])[0]
+        EV[iI] = sum(prob * aVals[iI,:])     
     grid.loadNeededPoints(EV)
     
     #for iK in range(refinement_level):
