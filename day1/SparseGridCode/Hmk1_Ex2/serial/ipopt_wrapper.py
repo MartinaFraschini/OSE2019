@@ -3,7 +3,7 @@
 #     ipopt_wrapper.py : an interface to IPOPT and PYIPOPT 
 #
 #     Simon Scheidegger, 06/17
-#
+#     Modified by Martina Fraschini
 #=======================================================================
 
 from parameters import *

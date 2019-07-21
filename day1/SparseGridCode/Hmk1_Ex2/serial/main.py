@@ -12,6 +12,7 @@
 #     - TASMANIAN (http://tasmanian.ornl.gov/)
 #
 #     Simon Scheidegger, 11/16 ; 07/17
+#     Modified by Martina Fraschini
 #======================================================================
 
 import nonlinear_solver_initial as solver     #solves opt. problems for terminal VF
@@ -43,6 +44,7 @@ valold=TasmanianSG.TasmanianSparseGrid()
 valold=valnew
 
 for i in range(numstart, numits):
+    print(numits)
     valnew=TasmanianSG.TasmanianSparseGrid()
     valnew, capnew, Vnew=interpol_iter.sparse_grid_iter(n_agents, iDepth, valold)
     valold=TasmanianSG.TasmanianSparseGrid()
@@ -67,14 +69,3 @@ print( " Errors are computed -- see errors.txt")
 print( " ")
 print( "===============================================================")
 #======================================================================
-
-# print value function
-plt.plot(capnew, Vnew[:,0], label=r'$\theta={}$'.format(theta[0]))
-plt.plot(capnew, Vnew[:,1], label=r'$\theta={}$'.format(theta[1]))
-plt.plot(capnew, Vnew[:,2], label=r'$\theta={}$'.format(theta[2]))
-plt.plot(capnew, Vnew[:,3], label=r'$\theta={}$'.format(theta[3]))
-plt.plot(capnew, Vnew[:,4], label=r'$\theta={}$'.format(theta[4]))
-plt.xlabel("Capital")
-plt.ylabel("Value function")
-plt.legend()
-plt.show()

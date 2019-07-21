@@ -7,6 +7,7 @@
 #     => at every gridpoint, we solve an optimization problem
 #
 #     Simon Scheidegger, 11/16 ; 07/17
+#     Modified by Martina Fraschini
 #======================================================================
 
 import TasmanianSG
@@ -58,7 +59,7 @@ def sparse_grid_iter(n_agents, iDepth, valold):
             #to_print=np.hstack((aPoints[iI].reshape(1,n_agents), v))
             #np.savetxt(file, to_print, fmt='%2.16f')
         #file.close()
-    #grid.loadNeededPoints(EV)
+    #    grid.loadNeededPoints(EV)
     
     f=open("grid_iter.txt", 'w')
     np.savetxt(f, aPoints, fmt='% 2.16f')

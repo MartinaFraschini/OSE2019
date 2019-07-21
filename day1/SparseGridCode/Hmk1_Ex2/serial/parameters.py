@@ -7,6 +7,7 @@
 #     https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2927400
 #
 #     Simon Scheidegger, 11/16 ; 07/17
+#     Modiefied by Martina Fraschini
 #====================================================================== 
 
 import numpy as np
@@ -45,7 +46,7 @@ eta=1
 big_A=(1.0-beta)/(psi*beta)
 
 theta = np.array([.9, .95, 1., 1.05, 1.1])
-theta_inf = 1.
+theta_inf = 1.    # value of theta at infinity = average of all possible values for theta
 n_shocks = len(theta)
 prob = .2 * np.ones([n_shocks,])
 
