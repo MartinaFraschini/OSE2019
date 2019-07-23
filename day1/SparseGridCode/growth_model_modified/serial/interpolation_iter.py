@@ -17,7 +17,7 @@ import nonlinear_solver_iterate as solveriter
 
 #======================================================================
 
-def sparse_grid_iter(n_agents, iDepth, valold):
+def sparse_grid_iter(n_agents, iDepth, valold, curr_theta):
     
     grid  = TasmanianSG.TasmanianSparseGrid()
 
@@ -37,13 +37,10 @@ def sparse_grid_iter(n_agents, iDepth, valold):
 
     aPoints=grid.getPoints()
     iNumP1=aPoints.shape[0]
-    aVals=np.empty([iNumP1, n_shocks])
-    EV = np.empty([iNumP1, 1])
+    aVals=np.empty([iNumP1, 1])
     for iI in range(iNumP1):
-        for sS in range(n_shocks):
-            aVals[iI,sS]=solveriter.iterate(aPoints[iI], n_agents, theta[sS], valold)[0]
-        EV[iI] = sum(prob * aVals[iI,:])
-    grid.loadNeededPoints(EV)
+        aVals[iI]=solveriter.iterate(aPoints[iI], n_agents, curr_theta, valold)[0]
+    grid.loadNeededPoints(aVals)
     
     #for iK in range(refinement_level):
         #file=open("comparison1.txt", 'w')
@@ -65,6 +62,6 @@ def sparse_grid_iter(n_agents, iDepth, valold):
     np.savetxt(f, aPoints, fmt='% 2.16f')
     f.close()
     
-    return grid, aPoints, aVals
+    return grid
 
 #======================================================================

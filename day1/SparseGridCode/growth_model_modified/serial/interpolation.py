@@ -17,7 +17,7 @@ import nonlinear_solver_initial as solver
 
 #======================================================================
 
-def sparse_grid(n_agents, iDepth):
+def sparse_grid(n_agents, iDepth, curr_theta):
     
     grid  = TasmanianSG.TasmanianSparseGrid()
 
@@ -36,35 +36,29 @@ def sparse_grid(n_agents, iDepth):
 
     aPoints=grid.getPoints()
     iNumP1=aPoints.shape[0]
-    aVals=np.empty([iNumP1, n_shocks])
-    EV = np.empty([iNumP1, 1])
+    aVals=np.empty([iNumP1, 1])
     for iI in range(iNumP1):
-        for sS in range(n_shocks):
-            aVals[iI,sS]=solver.initial(aPoints[iI], n_agents, theta[sS])[0]
-        EV[iI] = sum(prob * aVals[iI,:])     
-    grid.loadNeededPoints(EV)
+        aVals[iI]=solver.initial(aPoints[iI], n_agents, curr_theta)[0]    
+    grid.loadNeededPoints(aVals)
     
     for iK in range(refinement_level):
         #file=open("comparison0.txt", 'w')
         grid.setSurplusRefinement(fTol, 1, "fds")
         aPoints=grid.getNeededPoints()
         iNumP1=aPoints.shape[0]
-        aVals = np.empty([iNumP1, n_shocks])
-        EV = np.empty([iNumP1, 1])
+        aVals = np.empty([iNumP1, 1])
         for iI in range(iNumP1):
-            for sS in range(n_shocks):
-                aVals[iI,sS]=solver.initial(aPoints[iI], n_agents, theta[sS])[0]
-            EV[iI] = sum(prob * aVals[iI,:])
+            aVals[iI]=solver.initial(aPoints[iI], n_agents, curr_theta)[0]
             #v=aVals[iI,:]*np.ones((1,n_shocks))
             #to_print=np.hstack((aPoints[iI,:].reshape(n_shocks,n_agents), v))
             #np.savetxt(file, to_print, fmt='%2.16f')
         #file.close()
-        grid.loadNeededPoints(EV)
+        grid.loadNeededPoints(aVals)
     
     f=open("grid.txt", 'w')
     np.savetxt(f, aPoints, fmt='% 2.16f')
     f.close()
     
-    return grid, aPoints, aVals
+    return grid
 #======================================================================
 
