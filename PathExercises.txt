@@ -1,0 +1,16 @@
+Useful path to solutions for first week problem sets.
+
+- Analytical examples:
+/OSE2019/day1/SparseGridCode/analytical_examples/TASMANIAN_Python/Ex1_sparse_grid.ipynb
+
+- Growth model:
+/OSE2019/day1/SparseGridCode/growth_model_modified
+
+- day2 1,3,4,5:
+/OSE2019/day2/code_day2/Homework
+
+- day2 2:
+/OSE2019/Exercises_day1
+
+- day2 6:
+/OSE2019/day2/Projects
