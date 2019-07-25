@@ -1,0 +1,9 @@
+How to run a hybrid cpp code?
+You have to set both the number of threads and the number of processors
+
+1) compile with flags as in the makefile
+
+2) export OMP_NUM_THREADS = 2
+
+3) mpiexec -np 2 ./1a.hello_world_hybrid.exec
+
