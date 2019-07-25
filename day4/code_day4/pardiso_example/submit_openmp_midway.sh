@@ -17,7 +17,7 @@
 #SBATCH --cpus-per-task=8
 
 # this job will run in the sandyb partition on Midway1
-#SBATCH --partition=sandyb
+#SBATCH --partition=broadwl
 
 module load gcc/4.8
 module load mkl/11.2
