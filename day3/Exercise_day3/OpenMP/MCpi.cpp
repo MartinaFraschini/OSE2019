@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <iostream>
 #include <stdlib.h>
 #include <math.h>
 
@@ -6,12 +7,14 @@
  
 int main()
 {
-    double niter = 10000000;
+    int niter = 10000000;
     double x,y;
     int i;
     int count=0;
     double z;
     double pi;
+    int max_threads = omp_get_max_threads();
+    double time = -omp_get_wtime();
     //srand(time(NULL));
     //main loop
     #pragma omp parallel private(x,y,z) reduction(+:count)
@@ -32,6 +35,9 @@ int main()
         }
     }
     pi = ((double)count/(double)niter)*4.0;          //p = 4(m/n)
-    printf("Pi: %f\n", pi);
+    time += omp_get_wtime();
+    std::cout << "Pi: " << pi << std::endl;
+    std::cout << max_threads     << " threads" << std::endl;
+    std::cout << "time : " << time << " seconds" << std::endl;
     return 0;
 }
