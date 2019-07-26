@@ -6,7 +6,7 @@ FFLAGS=-O3
 
 #######################################################################	
 
-all: broadcast.exec allreduce.exec scatter.exec
+all: broadcast.exec allreduce.exec scatter.exec MCpi.exec
 
 #######################################################################	
 
@@ -21,6 +21,10 @@ allreduce.exec: allreduce.cpp
 ## Exercise 3: scatter
 scatter.exec: scatter.cpp
 	$(CXX) $(FFLAGS) scatter.cpp -o scatter.exec
+
+## Exercise 4: estimate pi with Monte Carlo
+MCpi.exec: MCpi.cpp
+	$(CXX) $(FFLAGS) MCpi.cpp -o MCpi.exec
 	
 #######################################################################	
 
