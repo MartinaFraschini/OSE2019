@@ -9,15 +9,16 @@ int main(int argc, char *argv[])
 {
     int niter = 10000000;
     double x,y;
-    int i;
+    int i, rank, size;
     int count=0, count_tot;
     double z;
     double pi;
-    double time = - MPI_Wtime();
+    double time = 0.;
     
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
+    time -= MPI_Wtime();
 
     int nitnode = niter/size;
     int rmd = niter % size;
