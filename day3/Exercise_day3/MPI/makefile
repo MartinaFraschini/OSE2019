@@ -6,7 +6,7 @@ FFLAGS=-O3
 
 #######################################################################	
 
-all: broadcast.exec allreduce.exec
+all: broadcast.exec allreduce.exec scatter.exec
 
 #######################################################################	
 
@@ -17,6 +17,10 @@ broadcast.exec: broadcast.cpp
 ## Exercise 2: allreduce
 allreduce.exec: allreduce.cpp
 	$(CXX) $(FFLAGS) allreduce.cpp -o allreduce.exec
+
+## Exercise 3: scatter
+scatter.exec: scatter.cpp
+	$(CXX) $(FFLAGS) scatter.cpp -o scatter.exec
 	
 #######################################################################	
 
