@@ -16,12 +16,12 @@ int main(int argc, char *argv[])
     }
     if (rank==0) {
         for (i=0; i<size; i++) {
-            senddata[i] = i;
+            senddata[i] = 2*i;
         }
     }
 
     /* scatter the value of senddata of rank 0 to receivedata of all ranks */
-    MPI_Scatter(&senddata, size, MPI_INT, &receivedata, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Scatter(&senddata, 1, MPI_INT, &receivedata, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
     printf("I am rank %i and the value is %i\n", rank, receivedata);
     MPI_Finalize();
