@@ -1,21 +1,20 @@
-#include <stdio.h>
+#include <iostream>
 #include <mpi.h>
 
 int main(int argc, char *argv[])
 {
-    int rank, data;
+    int rank=0;
+    double data=0.;
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     if (rank==0) {
-        printf("enter a value:\n");
-        fflush(stdout);
-        scanf ("%d",&data);
+        data = 0.8;
     }
 
     /* broadcast the value of data of rank 0 to all ranks */
-    MPI_Bcast(&data, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&data, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
-    printf("I am rank %i and the value is %i\n", rank, data);
+    std::cout << "I am rank " << rank << " and the value is " << data << std::endl;
     MPI_Finalize();
     return 0;
 }

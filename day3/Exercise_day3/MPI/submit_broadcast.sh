@@ -3,7 +3,8 @@
 #SBATCH --job-name=broadcast
 
 
-#SBATCH --ntasks=16
+#SBATCH --ntasks=10
+
 
 #SBATCH --time=00:02:00
 
