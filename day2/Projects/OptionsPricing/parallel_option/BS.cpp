@@ -87,11 +87,14 @@ int main(int argc, char **argv) {
   double K = 100.0;  // Strike price                                                                                  
   double r = 0.05;   // Risk-free rate (5%)                                                                           
   double v = 0.2;    // Volatility of the underlying (20%)                                                            
-  double T = 1.0;    // One year until expiry                                                                         
+  double T = 1.0;    // One year until expiry
+  double stime = -omp_get_wtime();                                                                       
 
   // Then we calculate the call/put values via Monte Carlo                                                                          
   double call = monte_carlo_call_price(num_sims, S, K, r, v, T);
   double put = monte_carlo_put_price(num_sims, S, K, r, v, T);
+
+  stime += omp_get_wtime();
 
   // Finally we output the parameters and prices                                                                      
   std::cout << "Number of Paths: " << num_sims << std::endl;
@@ -103,6 +106,8 @@ int main(int argc, char **argv) {
 
   std::cout << "Call Price:      " << call << std::endl;
   std::cout << "Put Price:       " << put << std::endl;
+
+  std::cout << "Execution time: " << stime << std::endl;
 
   return 0;
 }
