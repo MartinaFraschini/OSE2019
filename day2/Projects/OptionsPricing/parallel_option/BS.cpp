@@ -9,14 +9,14 @@
 #include <algorithm>    // Needed for the "max" function
 #include <cmath>
 #include <iostream>
-
+#include <omp.h>
 
 /* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  A simple implementation of the Box-Muller algorithm, used to 
 generate gaussian random numbers; necessary for the Monte Carlo 
 method below. */
 
-double gaussian_box_muller(unsigned int& myseed) {
+double gaussian_box_muller(unsigned int *myseed) {
   double x = 0.0;
   double y = 0.0;
   double euclid_sq = 0.0;
@@ -25,8 +25,8 @@ double gaussian_box_muller(unsigned int& myseed) {
   // until the square of their "euclidean distance" 
   // is less than unity
   do {
-    x = 2.0 * rand_r(&myseed) / static_cast<double>(RAND_MAX)-1;
-    y = 2.0 * rand_r(&myseed) / static_cast<double>(RAND_MAX)-1;
+    x = 2.0 * rand_r(myseed) / static_cast<double>(RAND_MAX)-1;
+    y = 2.0 * rand_r(myseed) / static_cast<double>(RAND_MAX)-1;
     euclid_sq = x*x + y*y;
   } while (euclid_sq >= 1.0);
 
