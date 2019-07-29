@@ -9,7 +9,7 @@
 #include <algorithm>    // Needed for the "max" function
 #include <cmath>
 #include <iostream>
-
+#include <omp.h>
 
 /* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  A simple implementation of the Box-Muller algorithm, used to 
@@ -44,7 +44,7 @@ double monte_carlo_call_price(const int& num_sims, const int& num_per, const dou
   #pragma omp parallel reduction(+:payoff_sum)
   {
     unsigned int myseed = 25234 + 17 * omp_get_thread_num();
-    #pragma omp for collapse(2)
+    #pragma omp for
     for (int i=0; i<num_sims; i++) {
       double S_old = S;
       double S_sum = 0.0;
@@ -72,7 +72,7 @@ double monte_carlo_put_price(const int& num_sims, const int& num_per, const doub
   #pragma omp parallel reduction(+:payoff_sum)
   {
     unsigned int myseed = 25234 + 17 * omp_get_thread_num();
-    #pragma omp for collapse(2)
+    #pragma omp for
     for (int i=0; i<num_sims; i++) {
       double S_old = S;
       double S_sum = 0.0;
