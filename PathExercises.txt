@@ -14,3 +14,9 @@ Useful path to solutions for first week problem sets.
 
 - day2 6:
 /OSE2019/day2/Projects
+
+- day3 OpenMP 1,2,3:
+/OSE2019/day2/Exercises_day3/OpenMP
+
+- day3 OpenMP 4:
+/OSE2019/day2/Projects/OptionsPricing/parallel_option

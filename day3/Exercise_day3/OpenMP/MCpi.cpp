@@ -19,7 +19,7 @@ int main()
     //main loop
     #pragma omp parallel private(x,y,z) reduction(+:count)
     {   
-        unsigned int myseed = omp_get_thread_num();
+        unsigned int myseed = 25234 + 17 * omp_get_thread_num();
         #pragma omp for
         for (int i=0; i<niter; ++i)
         {
