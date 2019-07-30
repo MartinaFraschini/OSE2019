@@ -38,7 +38,7 @@ double gaussian_box_muller(unsigned int *myseed) {
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Pricing a European vanilla call option with a Monte Carlo method
 
-double monte_carlo_call_price(const int& num_sims, const double& S, const double& K, const double& r, const double& v, const double& T) {
+double monte_carlo_call_price(const int& num_sims, const double& S, const double& K, const double& r, const double& v, const double& T, const int& nitnode) {
   double S_adjust = S * exp(T*(r-0.5*v*v));
   double S_cur = 0.0;
   double payoff_sum = 0.0;
@@ -47,20 +47,20 @@ double monte_carlo_call_price(const int& num_sims, const double& S, const double
   {
     unsigned int myseed = 25234 + 17 * omp_get_thread_num() * (rank+1)*2;
     #pragma omp for
-    for (int i=0; i<num_sims; i++) {
+    for (int i=0; i<nitnode; i++) {
       double gauss_bm = gaussian_box_muller(&myseed);
       S_cur = S_adjust * exp(sqrt(v*v*T)*gauss_bm);
       payoff_sum += std::max(S_cur - K, 0.0);
     }
   }
 
-  return (payoff_sum / static_cast<double>(num_sims)) * exp(-r*T);
+  return payoff_sum;
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Pricing a European vanilla put option with a Monte Carlo method
 
-double monte_carlo_put_price(const int& num_sims, const double& S, const double& K, const double& r, const double& v, const double& T) {
+double monte_carlo_put_price(const int& num_sims, const double& S, const double& K, const double& r, const double& v, const double& T, const int& nitnode) {
   double S_adjust = S * exp(T*(r-0.5*v*v));
   double S_cur = 0.0;
   double payoff_sum = 0.0;
@@ -69,14 +69,14 @@ double monte_carlo_put_price(const int& num_sims, const double& S, const double&
   {
     unsigned int myseed = 25234 + 17 * omp_get_thread_num() * (rank+1)*2;
     #pragma omp for
-    for (int i=0; i<num_sims; i++) {
+    for (int i=0; i<nitnode; i++) {
       double gauss_bm = gaussian_box_muller(&myseed);
       S_cur = S_adjust * exp(sqrt(v*v*T)*gauss_bm);
       payoff_sum += std::max(K - S_cur, 0.0);
     }
   }
 
-  return (payoff_sum / static_cast<double>(num_sims)) * exp(-r*T);
+  return payoff_sum;
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

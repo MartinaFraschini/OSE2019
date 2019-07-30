@@ -36,16 +36,16 @@ double gaussian_box_muller(unsigned int *myseed) {
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Pricing a Asian vanilla call option with a Monte Carlo method
 
-double monte_carlo_call_price(const int& num_sims, const int& num_per, const double& S, const double& K, const double& r, const double& v, const double& T) {
+double monte_carlo_call_price(const int& num_sims, const int& num_per, const double& S, const double& K, const double& r, const double& v, const double& T, const int& nitnode) {
   double interv = T / num_per;
   double S_cur = 0.0;
   double payoff_sum = 0.0;
 
   #pragma omp parallel reduction(+:payoff_sum)
   {
-    unsigned int myseed = 25234 + 17 * omp_get_thread_num();
+    unsigned int myseed = 25234 + 17 * omp_get_thread_num() * (rank+1)*2;
     #pragma omp for
-    for (int i=0; i<num_sims; i++) {
+    for (int i=0; i<nitnode; i++) {
       double S_old = S;
       double S_sum = 0.0;
       for (int j=0; j<num_per; j++) {
@@ -58,13 +58,13 @@ double monte_carlo_call_price(const int& num_sims, const int& num_per, const dou
     }
   }
 
-  return (payoff_sum / static_cast<double>(num_sims)) * exp(-r*T);
+  return payoff_sum;
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Pricing a Asian vanilla put option with a Monte Carlo method
 
-double monte_carlo_put_price(const int& num_sims, const int& num_per, const double& S, const double& K, const double& r, const double& v, const double& T) {
+double monte_carlo_put_price(const int& num_sims, const int& num_per, const double& S, const double& K, const double& r, const double& v, const double& T, const int& nitnode) {
   double interv = T / num_per;
   double S_cur = 0.0;
   double payoff_sum = 0.0;
@@ -73,7 +73,7 @@ double monte_carlo_put_price(const int& num_sims, const int& num_per, const doub
   {
     unsigned int myseed = 25234 + 17 * omp_get_thread_num();
     #pragma omp for
-    for (int i=0; i<num_sims; i++) {
+    for (int i=0; i<nitnode; i++) {
       double S_old = S;
       double S_sum = 0.0;
       for (int j=0; j<num_per; j++) {
@@ -86,7 +86,7 @@ double monte_carlo_put_price(const int& num_sims, const int& num_per, const doub
     }
   }
 
-  return (payoff_sum / static_cast<double>(num_sims)) * exp(-r*T);
+  return payoff_sum;
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -101,27 +101,50 @@ int main(int argc, char **argv) {
   double r = 0.05;   // Risk-free rate (5%)                                                                           
   double v = 0.2;    // Volatility of the underlying (20%)                                                            
   double T = 1.0;    // One year until expiry
-  double stime = -omp_get_wtime();                                                                   
+  int max_threads = omp_get_max_threads();
+  int rank, size;
+  double call_sum, put_sum;
+  double time = 0.;                                                                 
+
+  MPI_Init(&argc, &argv);
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  MPI_Comm_size(MPI_COMM_WORLD, &size);
+  time -= MPI_Wtime();
+
+  int nitnode = num_sims/size;
+  int rmd = num_sims % size;
+  if (rank<rmd)
+  {
+      nitnode += 1;
+  }                                                                
 
   // Then we calculate the call/put values via Monte Carlo                                                                          
-  double call = monte_carlo_call_price(num_sims, num_per, S, K, r, v, T);
-  double put = monte_carlo_put_price(num_sims, num_per, S, K, r, v, T);
+  double call_partial = monte_carlo_call_price(num_sims, S, K, r, v, T, nitnode); 
+  double put_partial = monte_carlo_put_price(num_sims, S, K, r, v, T, nitnode);
 
-  stime += omp_get_wtime();
+  MPI_Reduce(&call_partial, &call_sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+  MPI_Reduce(&put_partial, &put_sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 
-  // Finally we output the parameters and prices                                                                      
-  std::cout << "Number of Paths:   " << num_sims << std::endl;
-  std::cout << "Number of Periods: " << num_per << std::endl;
-  std::cout << "Underlying:        " << S << std::endl;
-  std::cout << "Strike:            " << K << std::endl;
-  std::cout << "Risk-Free Rate:    " << r << std::endl;
-  std::cout << "Volatility:        " << v << std::endl;
-  std::cout << "Maturity:          " << T << std::endl;
+  // Finally we output the parameters and prices 
+  if (rank == 0)
+  {
+    double call = (call_sum/ static_cast<double>(num_sims)) * exp(-r*T);
+    double put = (put_sum / static_cast<double>(num_sims)) * exp(-r*T);
+    time += MPI_Wtime();                                                      
+    std::cout << "Number of Paths: " << num_sims << std::endl;
+    std::cout << "Underlying:      " << S << std::endl;
+    std::cout << "Strike:          " << K << std::endl;
+    std::cout << "Risk-Free Rate:  " << r << std::endl;
+    std::cout << "Volatility:      " << v << std::endl;
+    std::cout << "Maturity:        " << T << std::endl;
 
-  std::cout << "Call Price:        " << call << std::endl;
-  std::cout << "Put Price:         " << put << std::endl;
+    std::cout << "Call Price:      " << call << std::endl;
+    std::cout << "Put Price:       " << put << std::endl;
 
-  std::cout << "Execution time: " << stime << std::endl;
+    std::cout << "time : " << time << " seconds" << std::endl;
+  }
 
+  MPI_Finalize();
+  
   return 0;
 }
