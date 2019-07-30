@@ -11,22 +11,23 @@ int main(int argc, char *argv[])
     int niter = 10000000;
     double x,y;
     int i;
-    int count=0;
+    int count=0, count_tot;
     double z;
     double pi;
     int max_threads = omp_get_max_threads();
-    double time = -omp_get_wtime();
+    double time = 0.;
 
     int numprocs, rank, namelen;
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    time -= MPI_Wtime();
 
     //srand(time(NULL));
     //main loop
     #pragma omp parallel private(x,y,z) reduction(+:count)
     {   
-        unsigned int myseed = 25234 + 17 * omp_get_thread_num();
+        unsigned int myseed = 25234 + 17 * omp_get_thread_num() * (rank+1)*2;
         #pragma omp for
         for (int i=0; i<niter; ++i)
         {
@@ -41,11 +42,19 @@ int main(int argc, char *argv[])
             }
         }
     }
-    pi = ((double)count/(double)niter)*4.0;          //p = 4(m/n)
-    time += omp_get_wtime();
-    std::cout << "Pi: " << pi << std::endl;
-    std::cout << max_threads     << " threads" << std::endl;
-    std::cout << "time : " << time << " seconds" << std::endl;
+
+    MPI_Reduce(&count, &count_tot, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+
+    if (rank == 0)
+    {
+        pi = ((double)count_tot/(double)niter)*4.0;        //p = 4(m/n)
+        time += MPI_Wtime();
+
+        std::cout << "Pi: " << pi << std::endl;
+        std::cout << max_threads     << " threads" << std::endl;
+        std::cout << numprocs     << " processors" << std::endl;
+        std::cout << "time : " << time << " seconds" << std::endl;
+    }
 
     MPI_Finalize();
     
