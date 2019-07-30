@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     int max_threads = omp_get_max_threads();
     double time = 0.;
 
-    int numprocs, rank, nitnode;
+    int numprocs, rank;
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
