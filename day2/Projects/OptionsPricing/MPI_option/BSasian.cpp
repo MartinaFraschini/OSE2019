@@ -93,6 +93,7 @@ int main(int argc, char **argv) {
   double r = 0.05;   // Risk-free rate (5%)                                                                           
   double v = 0.2;    // Volatility of the underlying (20%)                                                            
   double T = 1.0;    // One year until expiry
+  int rank, size;
   double call_sum, put_sum;
   double time = 0.; 
 
@@ -101,8 +102,8 @@ int main(int argc, char **argv) {
   MPI_Comm_size(MPI_COMM_WORLD, &size);
   time -= MPI_Wtime();
 
-  int nitnode = niter/size;
-  int rmd = niter % size;
+  int nitnode = num_sims/size;
+  int rmd = num_sims % size;
   if (rank<rmd)
   {
       nitnode += 1;
