@@ -10,6 +10,7 @@
 #include <cmath>
 #include <iostream>
 #include <omp.h>
+#include <mpi.h>
 
 /* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  A simple implementation of the Box-Muller algorithm, used to 
@@ -119,8 +120,8 @@ int main(int argc, char **argv) {
   }                                                                
 
   // Then we calculate the call/put values via Monte Carlo                                                                          
-  double call_partial = monte_carlo_call_price(num_sims, S, K, r, v, T, nitnode, rank); 
-  double put_partial = monte_carlo_put_price(num_sims, S, K, r, v, T, nitnode, rank);
+  double call_partial = monte_carlo_call_price(num_sims, num_per, S, K, r, v, T, nitnode, rank); 
+  double put_partial = monte_carlo_put_price(num_sims, num_per, S, K, r, v, T, nitnode, rank);
 
   MPI_Reduce(&call_partial, &call_sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
   MPI_Reduce(&put_partial, &put_sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);

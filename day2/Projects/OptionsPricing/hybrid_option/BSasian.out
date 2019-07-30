@@ -1,0 +1,9 @@
+Number of Paths: 10000000
+Underlying:      100
+Strike:          100
+Risk-Free Rate:  0.05
+Volatility:      0.2
+Maturity:        1
+Call Price:      5.81084
+Put Price:       3.37044
+time : 18.7457 seconds
