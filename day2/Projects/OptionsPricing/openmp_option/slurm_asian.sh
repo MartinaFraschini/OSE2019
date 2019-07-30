@@ -2,11 +2,11 @@
 
 #SBATCH --job-name=BSasian	## job name
 
-#SBATCH --output=BSasian.out		## output file
+#SBATCH --output=BSasian8.out		## output file
 
 #SBATCH --ntasks=1		## this job requests 1 core
 
-#SBATCH --cpus-per-task=1
+#SBATCH --cpus-per-task=8
 
 #SBATCH --partition=broadwl		## partition to use
 
