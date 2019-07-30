@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     }
 
     //set seed
-    srand(rank);
+    srand((rank+1)*2);
 
     //main loop
     for (int i=0; i<nitnode; ++i)

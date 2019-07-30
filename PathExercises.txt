@@ -20,3 +20,15 @@ Useful path to solutions for first week problem sets.
 
 - day3 OpenMP 4:
 /OSE2019/day2/Projects/OptionsPricing/openmp_option
+
+- day3 OpenMP 5:
+/OSE2019/day2/Projects/DynamicProgramming/openmp_DP
+
+- day3 MPI 1,2,3,4:
+/OSE2019/day2/Exercises_day3/MPI
+
+- day3 MPI 5:
+/OSE2019/day2/Projects/OptionsPricing/MPI_option
+
+- day3 MPI 6:
+/OSE2019/day2/Projects/DynamicProgramming/MPI_DP
