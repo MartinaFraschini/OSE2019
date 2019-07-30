@@ -36,7 +36,7 @@ double gaussian_box_muller(unsigned int *myseed) {
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Pricing a Asian vanilla call option with a Monte Carlo method
 
-double monte_carlo_call_price(const int& num_sims, const int& num_per, const double& S, const double& K, const double& r, const double& v, const double& T, const int& nitnode) {
+double monte_carlo_call_price(const int& num_sims, const int& num_per, const double& S, const double& K, const double& r, const double& v, const double& T, const int& nitnode, const int& rank) {
   double interv = T / num_per;
   double S_cur = 0.0;
   double payoff_sum = 0.0;
@@ -64,7 +64,7 @@ double monte_carlo_call_price(const int& num_sims, const int& num_per, const dou
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Pricing a Asian vanilla put option with a Monte Carlo method
 
-double monte_carlo_put_price(const int& num_sims, const int& num_per, const double& S, const double& K, const double& r, const double& v, const double& T, const int& nitnode) {
+double monte_carlo_put_price(const int& num_sims, const int& num_per, const double& S, const double& K, const double& r, const double& v, const double& T, const int& nitnode, const int& rank) {
   double interv = T / num_per;
   double S_cur = 0.0;
   double payoff_sum = 0.0;
@@ -119,8 +119,8 @@ int main(int argc, char **argv) {
   }                                                                
 
   // Then we calculate the call/put values via Monte Carlo                                                                          
-  double call_partial = monte_carlo_call_price(num_sims, S, K, r, v, T, nitnode); 
-  double put_partial = monte_carlo_put_price(num_sims, S, K, r, v, T, nitnode);
+  double call_partial = monte_carlo_call_price(num_sims, S, K, r, v, T, nitnode, rank); 
+  double put_partial = monte_carlo_put_price(num_sims, S, K, r, v, T, nitnode, rank);
 
   MPI_Reduce(&call_partial, &call_sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
   MPI_Reduce(&put_partial, &put_sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
