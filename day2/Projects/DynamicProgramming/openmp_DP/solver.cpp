@@ -11,6 +11,7 @@
 #include "../eigen/Eigen/Dense"
 #include "param.hpp"
 #include "econ.hpp"
+#include <omp.h>
 
 using namespace Eigen;
 
