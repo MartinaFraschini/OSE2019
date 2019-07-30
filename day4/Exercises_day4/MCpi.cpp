@@ -17,11 +17,18 @@ int main(int argc, char *argv[])
     int max_threads = omp_get_max_threads();
     double time = 0.;
 
-    int numprocs, rank, namelen;
+    int numprocs, rank, nitnode;
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     time -= MPI_Wtime();
+
+    int nitnode = niter/numprocs;
+    int rmd = niter % numprocs;
+    if (rank<rmd)
+    {
+        nitnode += 1;
+    }
 
     //srand(time(NULL));
     //main loop
@@ -29,7 +36,7 @@ int main(int argc, char *argv[])
     {   
         unsigned int myseed = 25234 + 17 * omp_get_thread_num() * (rank+1)*2;
         #pragma omp for
-        for (int i=0; i<niter; ++i)
+        for (int i=0; i<nitnode; ++i)
         {
             //get random points
             x = (double)rand_r(&myseed)/RAND_MAX;
