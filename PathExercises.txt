@@ -35,3 +35,6 @@ Useful path to solutions for first week problem sets.
 
 - day4 1:
 /OSE2019/day4/Exercises_day4
+
+- day4 4:
+/OSE2019/day2/Projects/OptionsPricing/hybrid_option
